@@ -97,5 +97,37 @@ function cartDisp() {
       }
       cartDisp();
     });
+        //increase counter
+        $(document).on("click", ".btnp", function () {
+          var proId = $(this).attr("value");
+          var proInd = cart.findIndex((ind) => {
+            return ind.id === proId;
+          });
+          cart[proInd].quantity = cart[proInd].quantity + 1;
+          cartDisp();
+        });
+        //decrease counter
+        $(document).on("click", ".btnm", function () {
+          var proId = $(this).attr("value");
+          var proInd = cart.findIndex((ind) => {
+            return ind.id === proId;
+          });
+      
+          if (cart[proInd].quantity == 1) {
+            let confirmText =
+              "Completely remove product from the list press OK to remove or Cancel to not.";
+            if (confirm(confirmText) == true) {
+              cart.splice(proInd, 1);
+            } else {
+              alert("PRODUCT NOT REMOVED");
+            }
+          } else {
+            cart[proInd].quantity = cart[proInd].quantity - 1;
+            console.log(proInd);
+          }
+          console.log(proInd);
+          cartDisp();
+        });
+    
   });
   
