@@ -29,9 +29,9 @@ function dynDisp(showcont) {
 }
 dynDisp(products);
 function cartDisp() {
-    if(cart.length<1){
-      cartTble = "YOUR SHOPPING CART IS EMPTY! START ADDING PRODUCTS";
-    }else{
+  if (cart.length < 1) {
+    cartTble = "YOUR SHOPPING CART IS EMPTY! START ADDING PRODUCTS";
+  } else {
     var grandTotal = 0;
     var cartTble =
       "<div class='Notification'></div><div class='Header'><h3 class='Heading'>Shopping Cart</h3><h5 class='Action'>Remove all</h5></div>";
@@ -63,71 +63,81 @@ function cartDisp() {
       grandTotal +
       "</div></div><button class='button'>Checkout</button></div>";
   }
-    document.getElementById("cart").innerHTML = cartTble;
-  }
-  cartDisp();
-  // add to cart
-  //cartDisp();
-  $(document).ready(function () {
-    $(".add-to-cart").on("click", function () {
-      //if cart is blank
-      var get_pr_id = $(this).attr("value");
-      var prQuan = 1;
-      if (cart.length == 0) {
+  document.getElementById("cart").innerHTML = cartTble;
+}
+cartDisp();
+// add to cart
+//cartDisp();
+$(document).ready(function () {
+  $(".add-to-cart").on("click", function () {
+    //if cart is blank
+    var get_pr_id = $(this).attr("value");
+    var prQuan = 1;
+    if (cart.length == 0) {
+      var proToCart = {
+        id: get_pr_id,
+        quantity: prQuan,
+      };
+      cart.push(proToCart);
+    } else if (cart.length > 0) {
+      var flag = 0;
+      cart.forEach((element) => {
+        if (element.id == get_pr_id) {
+          flag = 1;
+          element.quantity = element.quantity + 1;
+        }
+      });
+      if (flag == 0) {
         var proToCart = {
           id: get_pr_id,
           quantity: prQuan,
         };
         cart.push(proToCart);
-      } else if (cart.length > 0) {
-        var flag = 0;
-        cart.forEach((element) => {
-          if (element.id == get_pr_id) {
-            flag = 1;
-            element.quantity = element.quantity + 1;
-          }
-        });
-        if (flag == 0) {
-          var proToCart = {
-            id: get_pr_id,
-            quantity: prQuan,
-          };
-          cart.push(proToCart);
-        }
       }
-      cartDisp();
-    });
-        //increase counter
-        $(document).on("click", ".btnp", function () {
-          var proId = $(this).attr("value");
-          var proInd = cart.findIndex((ind) => {
-            return ind.id === proId;
-          });
-          cart[proInd].quantity = cart[proInd].quantity + 1;
-          cartDisp();
-        });
-        //decrease counter
-        $(document).on("click", ".btnm", function () {
-          var proId = $(this).attr("value");
-          var proInd = cart.findIndex((ind) => {
-            return ind.id === proId;
-          });
-      
-          if (cart[proInd].quantity == 1) {
-            let confirmText =
-              "Completely remove product from the list press OK to remove or Cancel to not.";
-            if (confirm(confirmText) == true) {
-              cart.splice(proInd, 1);
-            } else {
-              alert("PRODUCT NOT REMOVED");
-            }
-          } else {
-            cart[proInd].quantity = cart[proInd].quantity - 1;
-            console.log(proInd);
-          }
-          console.log(proInd);
-          cartDisp();
-        });
-    
+    }
+    cartDisp();
   });
-  
+
+  //increase counter
+  $(document).on("click", ".btnp", function () {
+    var proId = $(this).attr("value");
+    var proInd = cart.findIndex((ind) => {
+      return ind.id === proId;
+    });
+    cart[proInd].quantity = cart[proInd].quantity + 1;
+    cartDisp();
+  });
+  //decrease counter
+  $(document).on("click", ".btnm", function () {
+    var proId = $(this).attr("value");
+    var proInd = cart.findIndex((ind) => {
+      return ind.id === proId;
+    });
+
+    if (cart[proInd].quantity == 1) {
+      let confirmText =
+        "Completely remove product from the list press OK to remove or Cancel to not.";
+      if (confirm(confirmText) == true) {
+        cart.splice(proInd, 1);
+      } else {
+        alert("PRODUCT NOT REMOVED");
+      }
+    } else {
+      cart[proInd].quantity = cart[proInd].quantity - 1;
+      console.log(proInd);
+    }
+    console.log(proInd);
+    cartDisp();
+  });
+  //empty the cart
+  $(document).on("click", ".Action", function () {
+    let confirmText =
+      "Completely remove all product from the list press OK to remove or Cancel to not.";
+    if (confirm(confirmText) == true) {
+      cart = [];
+    } else {
+      alert("PRODUCT NOT REMOVED");
+    }
+    cartDisp();
+  });
+});
