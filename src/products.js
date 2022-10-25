@@ -53,7 +53,9 @@ function cartDisp() {
         products[element.id].price +
         "</div> <div class='Subtotal'>Sub-Total</div><div class='items'>$" +
         element.quantity * products[element.id].price +
-        "</div>  <div class='remove'><u>Remove</u></div></div></div>";
+        "</div>  <div class='remove'  value='" +
+        element.id +
+        "'><u>Remove</u></div></div></div>";
       grandTotal = grandTotal + element.quantity * products[element.id].price;
     });
     cartTble +=
@@ -113,7 +115,6 @@ $(document).ready(function () {
     var proInd = cart.findIndex((ind) => {
       return ind.id === proId;
     });
-
     if (cart[proInd].quantity == 1) {
       let confirmText =
         "Completely remove product from the list press OK to remove or Cancel to not.";
@@ -127,6 +128,22 @@ $(document).ready(function () {
       console.log(proInd);
     }
     console.log(proInd);
+    cartDisp();
+  });
+  //remove product cmpletly
+  $(document).on("click", ".remove", function () {
+    var proId = $(this).attr("value");
+    var proInd = cart.findIndex((ind) => {
+      return ind.id === proId;
+    });
+    console.log(proId);
+    let confirmText =
+      "Are you sure you want to delete this product press OK to remove or Cancel to not.";
+    if (confirm(confirmText) == true) {
+      cart.splice(proInd, 1);
+    } else {
+      alert("PRODUCT NOT REMOVED");
+    }
     cartDisp();
   });
   //empty the cart
